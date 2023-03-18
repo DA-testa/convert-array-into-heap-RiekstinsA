@@ -1,38 +1,63 @@
 # python3
-
+import sys
 
 def build_heap(data):
     swaps = []
-    # TODO: Creat heap and heap sort
-    # try to achieve  O(n) and not O(n2)
+    # TODO: Create heap and heap sort
+    # Try to achieve O(n) and not O(n^2)
+    def heap_sort(i):
+        
+        min_index = i
+        left = 2*i + 1
+        
+        if left < length and data[left] < data[min_index]:
+            min_index = left
+        right = 2*i + 2
+        
+        if right < length and data[right] < data[min_index]:
+            min_index = right
+        
+        if i != min_index:
+            swaps.append((i, min_index))
+            data[i], data[min_index] = data[min_index], data[i]
+            heap_sort(min_index)
 
+    length = len(data)
+    for i in range(length // 2, -1, -1):
+        heap_sort(i)
 
     return swaps
 
 
 def main():
+
+    I_or_F= input().strip()
     
-    # TODO : add input and corresponding checks
-    # add another input for I or F 
-    # first two tests are from keyboard, third test is from a file
+    if I_or_F == 'I':
+        n = int(input())
+        data = list(map(int, input().split()))
+    
+    elif I_or_F == 'F':
+        filename = input("file name: ")
+        testfolder = "./tests/" + filename
+        with open(testfolder) as f:
+            n = int(f.readline())
+            data = list(map(int, f.readline().split()))
+    
+    else:
+        print("invalid input")
+        sys.exit(1)
 
-
-    # input from keyboard
-    n = int(input())
-    data = list(map(int, input().split()))
-
-    # checks if lenght of data is the same as the said lenght
+    # Check if length of data is the same as the specified length
     assert len(data) == n
 
-    # calls function to assess the data 
-    # and give back all swaps
+    # Call function to assess the data and give back all swaps
     swaps = build_heap(data)
 
-    # TODO: output how many swaps were made, 
+    # TODO: Output how many swaps were made,
     # this number should be less than 4n (less than 4*len(data))
 
-
-    # output all swaps
+    # Output all swaps
     print(len(swaps))
     for i, j in swaps:
         print(i, j)
